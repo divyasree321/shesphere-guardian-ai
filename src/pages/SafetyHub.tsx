@@ -1,21 +1,64 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Shield, MapPin, AlertTriangle, Phone, Radio, Eye, Camera } from "lucide-react";
+import { Shield, MapPin, AlertTriangle, Phone, Radio, Eye, Camera, Navigation } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import GlassCard from "@/components/GlassCard";
 import GlowButton from "@/components/GlowButton";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Fix leaflet default marker icons
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+});
+
+const safetyIcon = new L.Icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+const nearbyPlaces = [
+  { name: "City Hospital", lat: 28.6148, lng: 77.2095, type: "Hospital" },
+  { name: "Women's Helpline Center", lat: 28.6190, lng: 77.2100, type: "Safety Center" },
+  { name: "Wellness Clinic", lat: 28.6120, lng: 77.2150, type: "Wellness" },
+  { name: "Police Station", lat: 28.6180, lng: 77.2050, type: "Safety" },
+];
+
+function LocationMarker() {
+  const [position, setPosition] = useState<[number, number] | null>(null);
+  const map = useMap();
+
+  useEffect(() => {
+    map.locate({ setView: true, maxZoom: 14 }).on("locationfound", (e) => {
+      setPosition([e.latlng.lat, e.latlng.lng]);
+    }).on("locationerror", () => {
+      // Default to Delhi
+      map.setView([28.6139, 77.2090], 14);
+    });
+  }, [map]);
+
+  return position ? (
+    <Marker position={position}>
+      <Popup>📍 You are here</Popup>
+    </Marker>
+  ) : null;
+}
 
 const SafetyHub = () => {
   const { toast } = useToast();
   const [mapOpen, setMapOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
+  const [destination, setDestination] = useState("");
 
   const activateSOS = () => {
     toast({
@@ -33,16 +76,34 @@ const SafetyHub = () => {
         </h1>
         <p className="text-muted-foreground mb-6">Women safety & emergency protection</p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          <GlassCard onClick={() => setMapOpen(true)}>
-            <div className="flex items-center gap-3 mb-3">
-              <MapPin className="h-5 w-5 text-primary" />
-              <span className="font-display font-semibold text-sm">Safe Route Navigation</span>
-            </div>
-            <p className="text-xs text-muted-foreground mb-3">Find the safest path to your destination using AI-analyzed crime data.</p>
-            <GlowButton size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); setMapOpen(true); }}>View Safe Routes</GlowButton>
-          </GlassCard>
+        {/* Inline Map */}
+        <GlassCard hover={false} className="mb-6 !p-0 overflow-hidden">
+          <div className="p-4 flex flex-col sm:flex-row gap-3 items-center">
+            <Input placeholder="Search destination..." value={destination} onChange={e => setDestination(e.target.value)} className="bg-muted/50 flex-1" />
+            <GlowButton size="sm" onClick={() => toast({ title: "🗺️ Route Found", description: `Safest route to "${destination || "your destination"}" calculated.` })}>
+              <Navigation className="h-4 w-4" /> Find Safe Route
+            </GlowButton>
+          </div>
+          <div className="h-64 md:h-80">
+            <MapContainer center={[28.6139, 77.2090]} zoom={13} style={{ height: "100%", width: "100%" }} scrollWheelZoom={true}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <LocationMarker />
+              {nearbyPlaces.map((place) => (
+                <Marker key={place.name} position={[place.lat, place.lng]} icon={safetyIcon}>
+                  <Popup>
+                    <strong>{place.name}</strong><br />
+                    <span className="text-xs">{place.type}</span>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </div>
+        </GlassCard>
 
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           <GlassCard>
             <div className="flex items-center gap-3 mb-3">
               <AlertTriangle className="h-5 w-5 text-destructive" />
@@ -60,7 +121,7 @@ const SafetyHub = () => {
               <Phone className="h-5 w-5 text-destructive" />
               <span className="font-display font-semibold text-sm">SOS Emergency</span>
             </div>
-            <p className="text-xs text-muted-foreground mb-3">Send live location, audio recording & emergency alerts to contacts.</p>
+            <p className="text-xs text-muted-foreground mb-3">Send live location, audio recording & alerts.</p>
             <GlowButton variant="secondary" size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); activateSOS(); }}>🚨 Activate SOS</GlowButton>
           </GlassCard>
 
@@ -78,7 +139,7 @@ const SafetyHub = () => {
               <Radio className="h-5 w-5 text-primary" />
               <span className="font-display font-semibold text-sm">Whisper SOS Mode</span>
             </div>
-            <p className="text-xs text-muted-foreground">Activate emergency mode by saying "Help me". Works silently.</p>
+            <p className="text-xs text-muted-foreground">Activate emergency by saying "Help me". Works silently.</p>
           </GlassCard>
 
           <GlassCard>
@@ -86,30 +147,10 @@ const SafetyHub = () => {
               <Eye className="h-5 w-5 text-primary" />
               <span className="font-display font-semibold text-sm">Live Location Sharing</span>
             </div>
-            <p className="text-xs text-muted-foreground mb-3">Share your real-time location with trusted family contacts.</p>
-            <GlowButton size="sm" variant="outline" className="w-full" onClick={() => toast({ title: "📍 Location Sharing Enabled", description: "Your trusted contacts can now see your live location." })}>
-              Share Location
-            </GlowButton>
+            <p className="text-xs text-muted-foreground mb-3">Share real-time location with trusted contacts.</p>
+            <GlowButton size="sm" variant="outline" className="w-full" onClick={() => toast({ title: "📍 Location Sharing Enabled" })}>Share Location</GlowButton>
           </GlassCard>
         </div>
-
-        {/* Map Dialog */}
-        <Dialog open={mapOpen} onOpenChange={setMapOpen}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader><DialogTitle className="font-display">Safe Route Map</DialogTitle></DialogHeader>
-            <div className="bg-muted rounded-xl h-64 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-12 w-12 text-primary mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">Interactive map interface</p>
-                <p className="text-xs text-muted-foreground mt-1">Showing safest routes with AI-analyzed safety scores</p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <Input placeholder="Enter destination..." className="bg-muted/50" />
-              <GlowButton size="sm" onClick={() => { setMapOpen(false); toast({ title: "🗺️ Route Found", description: "Safest route has been calculated." }); }}>Find Route</GlowButton>
-            </div>
-          </DialogContent>
-        </Dialog>
 
         {/* Report Dialog */}
         <Dialog open={reportOpen} onOpenChange={setReportOpen}>
@@ -128,9 +169,7 @@ const SafetyHub = () => {
                 <Label className="text-sm">Upload Evidence</Label>
                 <Input type="file" className="mt-1 bg-muted/50" />
               </div>
-              <GlowButton className="w-full" onClick={() => { setReportOpen(false); toast({ title: "✅ Report Submitted", description: "Your incident report has been filed." }); }}>
-                Submit Report
-              </GlowButton>
+              <GlowButton className="w-full" onClick={() => { setReportOpen(false); toast({ title: "✅ Report Submitted" }); }}>Submit Report</GlowButton>
             </div>
           </DialogContent>
         </Dialog>
