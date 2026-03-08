@@ -47,6 +47,10 @@ const testimonials = [
   { name: "Maya Johnson", role: "Data Scientist", text: "The mentorship network connected me with incredible women leaders who guided my career transition." },
 ];
 
+const scrollToFeatures = () => {
+  document.getElementById("features")?.scrollIntoView({ behavior: "smooth" });
+};
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -76,20 +80,14 @@ const Index = () => {
       {/* Hero */}
       <RotatingBackground overlay="hero" className="min-h-screen flex items-center pt-16">
         <div className="container mx-auto px-4 py-20">
-          <motion.div
-            className="max-w-3xl mx-auto text-center"
-            initial="hidden"
-            animate="visible"
-          >
+          <motion.div className="max-w-3xl mx-auto text-center" initial="hidden" animate="visible">
             <motion.div variants={fadeUp} custom={0} className="inline-flex items-center gap-2 glass-card px-4 py-2 mb-6 text-sm text-primary-foreground/80">
               <Bot className="h-4 w-4" />
               <span>AI-Powered Women Empowerment Platform</span>
             </motion.div>
             <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-primary-foreground leading-tight mb-6">
               Empowering Every Woman{" "}
-              <span className="gradient-text">
-                with AI
-              </span>
+              <span className="gradient-text">with AI</span>
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
               Safety. Health. Career. Opportunity. All in one intelligent platform designed to empower women across every dimension of life.
@@ -100,11 +98,9 @@ const Index = () => {
                   Get Started <ArrowRight className="h-5 w-5" />
                 </GlowButton>
               </Link>
-              <Link to="/login">
-                <GlowButton variant="outline" size="lg" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                  Explore Features
-                </GlowButton>
-              </Link>
+              <GlowButton variant="outline" size="lg" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" onClick={scrollToFeatures}>
+                Explore Features
+              </GlowButton>
             </motion.div>
           </motion.div>
         </div>
@@ -115,14 +111,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="text-center"
-              >
+              <motion.div key={stat.label} initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }} className="text-center">
                 <div className="text-3xl md:text-5xl font-display font-bold gradient-text mb-2">{stat.value}</div>
                 <div className="text-muted-foreground text-sm">{stat.label}</div>
               </motion.div>
@@ -134,28 +123,13 @@ const Index = () => {
       {/* Features */}
       <section id="features" className="py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
-              One Platform, <span className="gradient-text">Infinite Possibilities</span>
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Six powerful AI modules designed to support every aspect of a woman's life.
-            </p>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">One Platform, <span className="gradient-text">Infinite Possibilities</span></h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">Six powerful AI modules designed to support every aspect of a woman's life.</p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((f, i) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
+              <motion.div key={f.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                 <GlassCard className="h-full">
                   <f.icon className={`h-10 w-10 ${f.color} mb-4`} />
                   <h3 className="text-lg font-display font-semibold mb-2">{f.title}</h3>
@@ -170,26 +144,12 @@ const Index = () => {
       {/* How It Works */}
       <section id="how" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
-              How <span className="gradient-text">SheSphere AI</span> Works
-            </h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">How <span className="gradient-text">SheSphere AI</span> Works</h2>
           </motion.div>
           <div className="grid md:grid-cols-4 gap-6">
             {steps.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="text-center"
-              >
+              <motion.div key={s.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }} className="text-center">
                 <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-4">
                   <s.icon className="h-8 w-8 text-primary-foreground" />
                 </div>
@@ -205,30 +165,15 @@ const Index = () => {
       {/* Testimonials */}
       <section id="testimonials" className="py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
-              Voices of <span className="gradient-text">Empowerment</span>
-            </h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Voices of <span className="gradient-text">Empowerment</span></h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
-              <motion.div
-                key={t.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
+              <motion.div key={t.name} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                 <GlassCard className="h-full">
                   <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, j) => (
-                      <Star key={j} className="h-4 w-4 fill-secondary text-secondary" />
-                    ))}
+                    {[...Array(5)].map((_, j) => <Star key={j} className="h-4 w-4 fill-secondary text-secondary" />)}
                   </div>
                   <p className="text-muted-foreground text-sm mb-4 leading-relaxed">"{t.text}"</p>
                   <div>
@@ -245,21 +190,11 @@ const Index = () => {
       {/* CTA */}
       <RotatingBackground overlay="hero" className="py-20">
         <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-primary-foreground mb-4">
-              Ready to Transform Your Journey?
-            </h2>
-            <p className="text-primary-foreground/80 mb-8 max-w-lg mx-auto">
-              Join over a million women who are already using SheSphere AI to build safer, healthier, and more successful lives.
-            </p>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-primary-foreground mb-4">Ready to Transform Your Journey?</h2>
+            <p className="text-primary-foreground/80 mb-8 max-w-lg mx-auto">Join over a million women who are already using SheSphere AI to build safer, healthier, and more successful lives.</p>
             <Link to="/signup">
-              <GlowButton size="lg">
-                Join SheSphere AI <ChevronRight className="h-5 w-5" />
-              </GlowButton>
+              <GlowButton size="lg">Join SheSphere AI <ChevronRight className="h-5 w-5" /></GlowButton>
             </Link>
           </motion.div>
         </div>
@@ -274,9 +209,7 @@ const Index = () => {
                 <Globe className="h-6 w-6 text-primary" />
                 <span className="font-display text-lg font-bold gradient-text">SheSphere AI</span>
               </div>
-              <p className="text-muted-foreground text-sm">
-                AI-powered ecosystem empowering women through safety, health, career, and community.
-              </p>
+              <p className="text-muted-foreground text-sm">AI-powered ecosystem empowering women through safety, health, career, and community.</p>
             </div>
             <div>
               <h4 className="font-display font-semibold mb-3">Platform</h4>

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  Home, Shield, Heart, Briefcase, Rocket, Users,
+  Home, Shield, Heart, Brain, Briefcase, Rocket, Users,
   Lock, Radar, MessageCircle, User, Globe, Menu
 } from "lucide-react";
 import {
@@ -9,11 +9,13 @@ import {
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar,
 } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/NavLink";
+import GuardianAI from "@/components/GuardianAI";
 
 const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Safety Hub", url: "/dashboard/safety", icon: Shield },
   { title: "Health Hub", url: "/dashboard/health", icon: Heart },
+  { title: "Wellness", url: "/dashboard/wellness", icon: Brain },
   { title: "Career Hub", url: "/dashboard/career", icon: Briefcase },
   { title: "Startup Hub", url: "/dashboard/startup", icon: Rocket },
   { title: "Mentorship", url: "/dashboard/mentorship", icon: Users },
@@ -26,7 +28,6 @@ const navItems = [
 function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const location = useLocation();
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
@@ -85,6 +86,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </main>
         </div>
       </div>
+      <GuardianAI />
     </SidebarProvider>
   );
 };
