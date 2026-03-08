@@ -1,0 +1,81 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { MessageCircle, ThumbsUp, Share2, Send } from "lucide-react";
+import DashboardLayout from "@/components/DashboardLayout";
+import GlassCard from "@/components/GlassCard";
+import GlowButton from "@/components/GlowButton";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
+const posts = [
+  { author: "Meera S.", time: "2h ago", text: "Just got promoted to Lead Engineer! 🎉 SheSphere's career module helped me prepare for the interview.", likes: 42, comments: 8 },
+  { author: "Riya K.", time: "5h ago", text: "Looking for co-founders for my EdTech startup. Anyone interested in building something amazing together?", likes: 28, comments: 15 },
+  { author: "Anjali M.", time: "1d ago", text: "Completed the Data Science roadmap suggested by SkillRise AI. Already got 3 interview calls! 💪", likes: 65, comments: 12 },
+];
+
+const CommunityPage = () => {
+  const [newPost, setNewPost] = useState("");
+
+  return (
+    <DashboardLayout>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="text-2xl font-display font-bold mb-2 flex items-center gap-2">
+          <MessageCircle className="h-7 w-7 text-secondary" /> Community
+        </h1>
+        <p className="text-muted-foreground mb-6">Share, inspire, and support each other</p>
+
+        {/* New Post */}
+        <GlassCard hover={false} className="mb-6">
+          <Textarea
+            placeholder="Share something inspiring..."
+            className="bg-muted/50 border-border/50 mb-3 resize-none"
+            rows={3}
+            value={newPost}
+            onChange={(e) => setNewPost(e.target.value)}
+          />
+          <div className="flex justify-end">
+            <GlowButton size="sm"><Send className="h-4 w-4" /> Post</GlowButton>
+          </div>
+        </GlassCard>
+
+        {/* Posts */}
+        <div className="space-y-4">
+          {posts.map((post, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <GlassCard hover={false}>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">{post.author[0]}</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">{post.author}</p>
+                    <p className="text-xs text-muted-foreground">{post.time}</p>
+                  </div>
+                </div>
+                <p className="text-sm mb-4">{post.text}</p>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <button className="flex items-center gap-1 hover:text-primary transition-colors">
+                    <ThumbsUp className="h-3.5 w-3.5" /> {post.likes}
+                  </button>
+                  <button className="flex items-center gap-1 hover:text-primary transition-colors">
+                    <MessageCircle className="h-3.5 w-3.5" /> {post.comments}
+                  </button>
+                  <button className="flex items-center gap-1 hover:text-primary transition-colors">
+                    <Share2 className="h-3.5 w-3.5" /> Share
+                  </button>
+                </div>
+              </GlassCard>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </DashboardLayout>
+  );
+};
+
+export default CommunityPage;
