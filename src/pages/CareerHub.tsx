@@ -15,8 +15,8 @@ const CareerHub = () => {
   const { toast } = useToast();
   const [resumeOpen, setResumeOpen] = useState(false);
   const [interviewOpen, setInterviewOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([
-    { from: "ai" as const, text: "Hi! I'm your AI interview coach. What role are you preparing for?" }
+  const [chatMessages, setChatMessages] = useState<{ from: "ai" | "user"; text: string }[]>([
+    { from: "ai", text: "Hi! I'm your AI interview coach. What role are you preparing for?" }
   ]);
   const [chatInput, setChatInput] = useState("");
 

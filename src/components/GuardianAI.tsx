@@ -29,7 +29,7 @@ type Msg = { from: "ai" | "user"; text: string };
 
 const GuardianAI = () => {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState(defaultMessages);
+  const [messages, setMessages] = useState<Msg[]>(defaultMessages);
   const [input, setInput] = useState("");
 
   const send = () => {
