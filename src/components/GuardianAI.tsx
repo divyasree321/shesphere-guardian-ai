@@ -25,6 +25,8 @@ const getAIResponse = (input: string): string => {
   return "I'm here to help with safety, health, career, and opportunities. What would you like to know about?";
 };
 
+type Msg = { from: "ai" | "user"; text: string };
+
 const GuardianAI = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState(defaultMessages);
