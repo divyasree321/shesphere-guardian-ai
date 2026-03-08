@@ -87,7 +87,7 @@ const Index = () => {
             </motion.div>
             <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-primary-foreground leading-tight mb-6">
               Empowering Every Woman{" "}
-              <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-rose-300 bg-clip-text text-transparent">
+              <span className="gradient-text">
                 with AI
               </span>
             </motion.h1>
