@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Shield, MapPin, AlertTriangle, Phone, Radio, Eye, Camera, Navigation } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -9,50 +9,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-
-// Fix leaflet default marker icons
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-});
-
-const safetyIcon = new L.Icon({
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-
-const nearbyPlaces = [
-  { name: "City Hospital", lat: 28.6148, lng: 77.2095, type: "Hospital" },
-  { name: "Women's Helpline Center", lat: 28.6190, lng: 77.2100, type: "Safety Center" },
-  { name: "Wellness Clinic", lat: 28.6120, lng: 77.2150, type: "Wellness" },
-  { name: "Police Station", lat: 28.6180, lng: 77.2050, type: "Safety" },
-];
-
-function LocationMarker() {
-  const [position, setPosition] = useState<[number, number] | null>(null);
-  const map = useMap();
-
-  useEffect(() => {
-    map.locate({ setView: true, maxZoom: 14 }).on("locationfound", (e) => {
-      setPosition([e.latlng.lat, e.latlng.lng]);
-    }).on("locationerror", () => {
-      // Default to Delhi
-      map.setView([28.6139, 77.2090], 14);
-    });
-  }, [map]);
-
-  return position ? (
-    <Marker position={position}>
-      <Popup>📍 You are here</Popup>
-    </Marker>
-  ) : null;
-}
 
 const SafetyHub = () => {
   const { toast } = useToast();
