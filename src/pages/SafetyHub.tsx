@@ -41,21 +41,14 @@ const SafetyHub = () => {
             </GlowButton>
           </div>
           <div className="h-64 md:h-80">
-            <MapContainer center={[28.6139, 77.2090]} zoom={13} style={{ height: "100%", width: "100%" }} scrollWheelZoom={true}>
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <LocationMarker />
-              {nearbyPlaces.map((place) => (
-                <Marker key={place.name} position={[place.lat, place.lng]} icon={safetyIcon}>
-                  <Popup>
-                    <strong>{place.name}</strong><br />
-                    <span className="text-xs">{place.type}</span>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
+            <iframe
+              title="SafeRoute Map"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              src="https://www.openstreetmap.org/export/embed.html?bbox=77.18%2C28.59%2C77.24%2C28.64&layer=mapnik"
+              allowFullScreen
+            />
           </div>
         </GlassCard>
 
