@@ -9,9 +9,11 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import SafetyHub from "./pages/SafetyHub";
 import HealthHub from "./pages/HealthHub";
+import WellnessPage from "./pages/WellnessPage";
 import CareerHub from "./pages/CareerHub";
 import StartupHub from "./pages/StartupHub";
 import MentorshipHub from "./pages/MentorshipHub";
+import BookSessionPage from "./pages/BookSessionPage";
 import ProtectionHub from "./pages/ProtectionHub";
 import OpportunitiesPage from "./pages/OpportunitiesPage";
 import CommunityPage from "./pages/CommunityPage";
@@ -33,9 +35,11 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/safety" element={<SafetyHub />} />
           <Route path="/dashboard/health" element={<HealthHub />} />
+          <Route path="/dashboard/wellness" element={<WellnessPage />} />
           <Route path="/dashboard/career" element={<CareerHub />} />
           <Route path="/dashboard/startup" element={<StartupHub />} />
           <Route path="/dashboard/mentorship" element={<MentorshipHub />} />
+          <Route path="/dashboard/book-session" element={<BookSessionPage />} />
           <Route path="/dashboard/protection" element={<ProtectionHub />} />
           <Route path="/dashboard/opportunities" element={<OpportunitiesPage />} />
           <Route path="/dashboard/community" element={<CommunityPage />} />
